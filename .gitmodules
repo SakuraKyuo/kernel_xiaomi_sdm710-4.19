@@ -1,0 +1,4 @@
+[submodule "arch/arm64/boot/dts/qcom-legacy"]
+	path = arch/arm64/boot/dts/qcom-legacy
+	url = https://github.com/SakuraKyuo/qcom-legacy_devicetree.git
+	branch = 4.19
