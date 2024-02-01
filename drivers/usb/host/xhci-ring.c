@@ -3,6 +3,7 @@
  * xHCI host controller driver
  *
  * Copyright (C) 2008 Intel Corp.
+ * Copyright (C) 2020 XiaoMi, Inc.
  *
  * Author: Sarah Sharp
  * Some code borrowed from the Linux EHCI driver.
@@ -58,6 +59,9 @@
 #include "xhci.h"
 #include "xhci-trace.h"
 #include "xhci-mtk.h"
+extern void kick_usbpd_vbus_sm(void);
+extern unsigned int connected_usb_idVendor;
+extern unsigned int connected_usb_idProduct;
 
 /*
  * Returns zero if the TRB isn't in this segment, otherwise it returns the DMA
@@ -287,6 +291,9 @@ void xhci_ring_cmd_db(struct xhci_hcd *xhci)
 
 static bool xhci_mod_cmd_timer(struct xhci_hcd *xhci, unsigned long delay)
 {
+	if ((0x2717 == connected_usb_idVendor)&&(0x3801 == connected_usb_idProduct)) {
+		delay = 500;
+	}
 	return mod_delayed_work(system_wq, &xhci->cmd_timer, delay);
 }
 
